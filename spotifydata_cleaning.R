@@ -1,5 +1,5 @@
 library(dplyr)
-
+library(ggplot2)
 
 genre = read.csv(file = 'Spotify_Genres.csv',stringsAsFactors = FALSE)
 head(genre)
@@ -33,5 +33,22 @@ final = final %>% rename(Genre = genre,
                            Valence = valence.x,
                            Album = album,
                            Date = date)  
-colnames(final)
+head(final)
+
+final %>% mutate(Date = as.Date(Date))
+tail(final)
+final$Year= year(as.Date(final$Date,"%m/%d/%y"))
+head(final)
 write.csv(final, file = "Spotifydata.csv")
+val_by_genre = final %>% group_by(.,Genre) %>% 
+          summarise(avg_valence = mean(Valence)) 
+
+
+ggplot(practice) +
+  geom_bar(aes(x = Genre,y = avg_valence),stat = 'identity')
+
+val_by_date = final %>% group_by(.,Date) %>% 
+          summarise(avg_valence = mean(Valence))
+  
+
+                    
