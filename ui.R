@@ -11,15 +11,17 @@ shinyUI(dashboardPage(
     
     sidebarMenu(
       menuItem("Home",tabName = 'home',icon =icon('home')),
-      menuItem("Artist",tabName = 'artist',icon = icon('address-book')),
       menuItem('Year',tabName = 'year',icon = icon('calendar')),
-      menuItem("Analysis",tabName = 'analysis',icon = icon('dashboard')),
+      menuItem("Explore",tabName = 'artist',icon = icon('hourglass-1')),
+      menuItem("Analysis",tabName = 'analysis',icon = icon('envelope-open')),
       menuItem("Data",tabName = 'data',icon = icon('table'))),
 
     selectizeInput("selected",
                    label = "Select Item to Display",
                    choices, selected=T)
-    ),
+    
+  ), 
+  
   
   dashboardBody(
     tags$head(
@@ -30,16 +32,18 @@ shinyUI(dashboardPage(
               fluidRow(column(6,
                         valueBoxOutput("maxpopular",width = 10)),
                        column(6,
-                        valueBoxOutput("minpopular",width = 10)))),
-      tabItem(tabName = 'artist',
-              plotlyOutput("valscatter")),
+                        valueBoxOutput("maxpopularyear",width = 10))),
+              fluidRow(plotOutput('genre'))
+              ),
       tabItem(tabName = 'year',
-              fluidRow(column(6,
-                              plotlyOutput("time1")),
-                       column(6,
-                              plotlyOutput("time2")))),
+              fluidPage(
+                fluidRow(plotlyOutput("time1")),
+                fluidRow(plotlyOutput("time2")))),
+      tabItem(tabName = 'artist',
+              fluidRow(column(6,plotlyOutput("valscatter")),
+                       column(6,plotlyOutput('speech')))),
       tabItem(tabName = 'analysis',
-              plotlyOutput('correlation')),
+              plotlyOutput('analysis')),
       tabItem(tabName = 'data',
               fluidRow(box(DT::dataTableOutput("table"),width = 12)))
       )

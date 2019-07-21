@@ -7,7 +7,8 @@ library(shinydashboard)
 library(plotly)
 library(gtools)
 library(ggthemes)
-
+library(reshape2)
+library(extrafont)
 
 # convert matrix to dataframe
 
@@ -18,6 +19,7 @@ rownames(spotify) = NULL
 
 # create variable with colnames as choice
 choices = colnames(spotify[,-1])
+artists = unique(spotify$Artist)
 LANG="en_US.UTF-8"
 
 ##creating a new data frame for correlation of year measurements
@@ -26,6 +28,7 @@ Pop_cor = cor(as.matrix(spotify[,5]), as.matrix(spotify[,-c(1:5,11,14,17,19,20)]
 Speech_cor = cor(as.matrix(spotify[,15]), as.matrix(spotify[,-c(1:4,11,14,15,17,19,20)])) ##Speechiness
 Inst_cor = cor(as.matrix(spotify[,10]), as.matrix(spotify[,-c(1:4,10,11,14,17,19,20)])) ##Instrumentalness 
 
-cor_df = smartbind(Val_cor,Pop_cor,Speech_cor,Inst_cor) ## combines all rows by true values
 
+cor_df = smartbind(Val_cor,Pop_cor,Speech_cor,Inst_cor) ## combines all rows by true values
+row.names(cor_df) = c('Valence','Popularity','Speechiness','Instrumnentalness')
 
